@@ -1,43 +1,46 @@
 package com.example.demo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 public class BookController {
-
-    //    @Autowired nie je best practice
     private BookService bookService;
 
-    //    best practice --> Service v Constructor
-    public BookController(BookService bookService){
+    public BookController(BookService bookService) {
         this.bookService = bookService;
     }
 
     @GetMapping("/api/books")
-    public List<Book> getBooks(@RequestParam(required = false) String bookAuthor){
+    public List<BookDto> getBooks(@RequestParam(required = false) String bookAuthor) {
         return bookService.getBooks(bookAuthor);
     }
 
     @GetMapping("/api/books/{bookId}")
-    public Book getBook(@PathVariable Integer bookId){
+    public BookDto getBook(@PathVariable Long bookId) {
         return bookService.getBook(bookId);
     }
 
     @PostMapping("/api/books")
-    public Integer createBook(@RequestBody Book book){
-        return bookService.createBook(book);
+    public Long createBook(@RequestBody BookDto bookDto) {
+        return bookService.createBook(bookDto);
     }
 
     @DeleteMapping("/api/books/{bookId}")
-    public void deleteBook(@PathVariable Integer bookId){
+    public void deleteBook(@PathVariable int bookId) {
         bookService.deleteBook(bookId);
     }
 
     @PutMapping("/api/books/{bookId}")
-    public void updateBook(@PathVariable Integer bookId, @RequestBody Book book){
-        bookService.updateBook(bookId, book);
+    public void updateBook(@PathVariable int bookId, @RequestBody BookDto bookDto) {
+        bookService.updateBook(bookId, bookDto);
     }
 }
